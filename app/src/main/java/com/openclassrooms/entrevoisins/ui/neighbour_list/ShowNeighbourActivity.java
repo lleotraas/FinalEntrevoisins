@@ -1,6 +1,7 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +24,8 @@ import butterknife.ButterKnife;
 
 public class ShowNeighbourActivity extends AppCompatActivity {
     public static final String  TAG = "ShowNeighbourActivity";
-    public int mNeighbourPosition;
+    public int mNeighbourIndex;
     public NeighbourApiService mApiService;
-
 
     @BindView(R.id.activity_show_neighbour_return_ib)
     ImageButton returnIBtn;
@@ -47,6 +47,7 @@ public class ShowNeighbourActivity extends AppCompatActivity {
     FloatingActionButton favoriteNeighbourFab;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,59 +66,75 @@ public class ShowNeighbourActivity extends AppCompatActivity {
         favoriteNeighbourFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mApiService.getNeighbours().get(mNeighbourPosition).getFavourite()){
-                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourPosition).getFavourite());
-                    mApiService.getNeighbours().get(mNeighbourPosition).setFavourite(false);
+                if(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite()){
+                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
+                    mApiService.getNeighbours().get(mNeighbourIndex).setFavourite(false);
                     setImageNotFavourite();
                 }else{
-                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourPosition).getFavourite());
-                    mApiService.getNeighbours().get(mNeighbourPosition).setFavourite(true);
+                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
+                    mApiService.getNeighbours().get(mNeighbourIndex).setFavourite(true);
                     setImageFavourite();
                 }
 
             }
         });
         Objects.requireNonNull(getSupportActionBar()).hide();
-        getIncomingIntent();
+
+        getNeighbourInformations(getNeighbourIndex(getIntent().getLongExtra("neighbour_id", 0)));
+        neighbourIsFavourite(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
+
     }
 
-    private void getIncomingIntent(){
-        Log.d(TAG, "getIncomingIntent: checking for incoming intents");
-
-        if(getIntent().hasExtra("neighbour_id")){
-            Log.d(TAG, "getIncomingIntent: found intent extras");
-
-            long id = getIntent().getLongExtra("neighbour_id", 0) ;
-            for(int index = 0;index < mApiService.getNeighbours().size();index++){
-                if(id == mApiService.getNeighbours().get(index).getId()){
-                    mNeighbourPosition = index;
-                    Log.d(TAG, "getIncomingIntent: position = " + mNeighbourPosition);
-                    String imageUrl = mApiService.getNeighbours().get(mNeighbourPosition).getAvatarUrl();
-                    String imageName = mApiService.getNeighbours().get(mNeighbourPosition).getName();
-                    String aboutMe = mApiService.getNeighbours().get(mNeighbourPosition).getAboutMe();
-                    String address = mApiService.getNeighbours().get(mNeighbourPosition).getAddress();
-                    String phoneNumber = mApiService.getNeighbours().get(mNeighbourPosition).getPhoneNumber();
-                    boolean isFavourite = mApiService.getNeighbours().get(mNeighbourPosition).getFavourite();
-                    String facebook = mApiService.getNeighbours().get(mNeighbourPosition).getFacebook();
-
-                    setImage(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
-
-                    setNeighbourPosition(mNeighbourPosition);
-                    Log.d(TAG, "getIncomingIntent: isFavourite = " + isFavourite);
-                    if(isFavourite){
-                        setImageFavourite();
-                    }else {
-                        setImageNotFavourite();
-                    }
-                }
+    /**
+     * get the position of the neighbour
+     * @return
+     */
+    public int getNeighbourIndex(long id){
+        for(int index = 0;index < mApiService.getNeighbours().size();index++) {
+            if (id == mApiService.getNeighbours().get(index).getId()) {
+                setNeighbourIndex(index);
             }
-
-
-
         }
+        return mNeighbourIndex;
     }
 
-    private void setImage(String imageUrl, String name, String aboutMe, String address, String phoneNumber, String facebook){
+    /**
+     * get all neighbour informations
+     * @param neighbourPosition
+     */
+    public void getNeighbourInformations(int neighbourPosition){
+        Log.d(TAG, "getIncomingIntent: position = " + mNeighbourIndex);
+        String imageUrl = mApiService.getNeighbours().get(mNeighbourIndex).getAvatarUrl();
+        String imageName = mApiService.getNeighbours().get(mNeighbourIndex).getName();
+        String aboutMe = mApiService.getNeighbours().get(mNeighbourIndex).getAboutMe();
+        String address = mApiService.getNeighbours().get(mNeighbourIndex).getAddress();
+        String phoneNumber = mApiService.getNeighbours().get(mNeighbourIndex).getPhoneNumber();
+        String facebook = mApiService.getNeighbours().get(mNeighbourIndex).getFacebook();
+
+        setNeighbourInformations(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
+    }
+
+    public void getNeighbour(Neighbour neighbour){
+        String imageUrl = neighbour.getAvatarUrl();
+        String imageName = neighbour.getName();
+        String aboutMe = neighbour.getAboutMe();
+        String address = neighbour.getAddress();
+        String phoneNumber = neighbour.getPhoneNumber();
+        String facebook = neighbour.getFacebook();
+
+        setNeighbourInformations(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
+    }
+
+    /**
+     * set all neighbour informations
+     * @param imageUrl
+     * @param name
+     * @param aboutMe
+     * @param address
+     * @param phoneNumber
+     * @param facebook
+     */
+    private void setNeighbourInformations(String imageUrl, String name, String aboutMe, String address, String phoneNumber, String facebook){
         Log.d(TAG, "setImage: setting the image and name to widgets.");
         neighbourName.setText(name);
         neighbourNameContent.setText(name);
@@ -132,9 +149,26 @@ public class ShowNeighbourActivity extends AppCompatActivity {
 
     }
 
-    public void setNeighbourPosition(int neighbourPosition){
-        Log.d(TAG, "setNeighbourPosition: N°" + neighbourPosition);
-        this.mNeighbourPosition = neighbourPosition;
+    /**
+     * verify if the neighbour is favourite
+     * @param isFavourite
+     */
+    public void neighbourIsFavourite(boolean isFavourite){
+        Log.d(TAG, "getIncomingIntent: isFavourite = " + isFavourite);
+        if(isFavourite){
+            setImageFavourite();
+        }else {
+            setImageNotFavourite();
+        }
+    }
+
+    public int getNeighbourIndex() {
+        return mNeighbourIndex;
+    }
+
+    public void setNeighbourIndex(int neighbourIndex){
+        Log.d(TAG, "setNeighbourPosition: N°" + neighbourIndex);
+        this.mNeighbourIndex = neighbourIndex;
     }
 
     private void setImageNotFavourite(){
@@ -150,6 +184,9 @@ public class ShowNeighbourActivity extends AppCompatActivity {
                 .load(R.drawable.ic_star_white_24dp)
                 .into(favoriteNeighbourFab);
     }
+
+
+
 
 
 }

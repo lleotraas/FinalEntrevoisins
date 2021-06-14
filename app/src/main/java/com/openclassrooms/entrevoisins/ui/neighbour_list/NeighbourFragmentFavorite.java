@@ -29,7 +29,7 @@ public class NeighbourFragmentFavorite extends Fragment {
 
     private static final String TAG = "FavoriteFragment";
     private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours;
+    //private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
 
     public static NeighbourFragmentFavorite newInstance(){
@@ -41,7 +41,7 @@ public class NeighbourFragmentFavorite extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        mNeighbours = new ArrayList<>();
+      //  mNeighbours = new ArrayList<>();
     }
 
 
@@ -56,23 +56,23 @@ public class NeighbourFragmentFavorite extends Fragment {
 
     }
 
-    private void initList(){
-        for (int index = 0;index < mApiService.getNeighbours().size();index++){
-            if(mApiService.getNeighbours().get(index).getFavourite() == true){
-                Log.d(TAG, "initList: N°" + index + " added");
-                mNeighbours.add(mApiService.getNeighbours().get(index));
-            }
-        }
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
-    }
-
-    private void removeFavoriteList(){
-        Iterator<Neighbour> iterator = mNeighbours.iterator();
-        while(iterator.hasNext()){
-            Object object = iterator.next();
-            iterator.remove();
-        }
-    }
+//    private void initList(){
+//        for (int index = 0;index < mApiService.getNeighbours().size();index++){
+//            if(mApiService.getNeighbours().get(index).getFavourite() == true){
+//                Log.d(TAG, "initList: N°" + index + " added");
+//                mNeighbours.add(mApiService.getNeighbours().get(index));
+//            }
+//        }
+//        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+//    }
+//
+//    private void removeFavoriteList(){
+//        Iterator<Neighbour> iterator = mNeighbours.iterator();
+//        while(iterator.hasNext()){
+//            Object object = iterator.next();
+//            iterator.remove();
+//        }
+//    }
 
 
 
@@ -87,8 +87,9 @@ public class NeighbourFragmentFavorite extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: resumed");
-        removeFavoriteList();
-        initList();
+        mApiService.removeFavoriteList();
+        mApiService.initFavoriteList();
+        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mApiService.getFavoriteNeighbours()));
     }
 
     @Override
@@ -101,7 +102,7 @@ public class NeighbourFragmentFavorite extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
         mApiService.deleteNeighbour(event.neighbour);
-        removeFavoriteList();
-        initList();
+        mApiService.removeFavoriteList();
+        mApiService.initFavoriteList();
     }
 }
