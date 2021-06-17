@@ -12,7 +12,7 @@ import java.util.List;
 public class DummyNeighbourApiService implements  NeighbourApiService {
 
     private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
-    private List<Neighbour> favoriteNeighbours = new ArrayList<>();
+    public List<Neighbour> favoriteNeighbours = new ArrayList<>();
 
 
     /**
@@ -45,18 +45,19 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
         neighbours.add(neighbour);
     }
 
+
     @Override
-    public void initFavoriteList() {
+    public void initFavoriteList(List<Neighbour> neighbour) {
         for(int index = 0;index < neighbours.size();index++){
-            if(neighbours.get(index).getFavourite() == true){
-                favoriteNeighbours.add(neighbours.get(index));
+            if(neighbours.get(index).getFavourite()){
+                neighbour.add(neighbours.get(index));
             }
         }
     }
 
     @Override
-    public void removeFavoriteList() {
-        Iterator<Neighbour> iterator = favoriteNeighbours.iterator();
+    public void removeFavoriteList(List<Neighbour> neighbour) {
+        Iterator<Neighbour> iterator = neighbour.iterator();
         while(iterator.hasNext()){
             Object object = iterator.next();
             iterator.remove();

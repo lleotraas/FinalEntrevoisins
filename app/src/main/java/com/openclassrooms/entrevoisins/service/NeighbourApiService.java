@@ -30,10 +30,13 @@ public interface NeighbourApiService {
      */
     void createNeighbour(Neighbour neighbour);
 
+    /**
+     * Initialize the list of favorite neighbours to show
+     */
+    void initFavoriteList(List<Neighbour> neighbour);
 
-    void initFavoriteList();
-
-    void removeFavoriteList();
-
-
+    /**
+     * Remove the list of favorite neighbours
+     */
+    void removeFavoriteList(List<Neighbour> neighbour);
 }
