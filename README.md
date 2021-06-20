@@ -1,3 +1,10 @@
-# OpenClassrooms
+# Entrevoisins
 
-Ce dépôt contient une mini-application pour le P3 du parcours **Grande École du Numérique**.
+Entevoisins is a social application to allow neighbors to provide services to each other.
+
+## Installation
+
+- Download this projet to your computer.
+- Extract the project.
+- Open it with android studio.
+- 
