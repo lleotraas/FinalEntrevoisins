@@ -35,6 +35,8 @@ public class AddNeighbourActivity extends AppCompatActivity {
     TextInputLayout addressInput;
     @BindView(R.id.aboutMeLyt)
     TextInputLayout aboutMeInput;
+    @BindView(R.id.facebook)
+    TextInputLayout facebookInput;
     @BindView(R.id.create)
     MaterialButton addButton;
 
@@ -90,7 +92,7 @@ public class AddNeighbourActivity extends AppCompatActivity {
                 phoneInput.getEditText().getText().toString(),
                 aboutMeInput.getEditText().getText().toString(),
                 false,
-                "www.facebook.fr/" + nameInput.getEditText().getText().toString()
+                facebookInput.getEditText().getText().toString()
         );
         mApiService.createNeighbour(neighbour);
         finish();

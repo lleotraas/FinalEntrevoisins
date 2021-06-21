@@ -32,11 +32,13 @@ public interface NeighbourApiService {
 
     /**
      * Initialize the list of favorite neighbours to show
+     * @param neighbour
      */
     void initFavoriteList(List<Neighbour> neighbour);
 
     /**
      * Remove the list of favorite neighbours
+     * @param neighbour
      */
     void removeFavoriteList(List<Neighbour> neighbour);
 }

@@ -45,7 +45,10 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
         neighbours.add(neighbour);
     }
 
-
+    /**
+     * {@inheritDoc}
+     * @param neighbour
+     */
     @Override
     public void initFavoriteList(List<Neighbour> neighbour) {
         for(int index = 0;index < neighbours.size();index++){
@@ -55,6 +58,10 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param neighbour
+     */
     @Override
     public void removeFavoriteList(List<Neighbour> neighbour) {
         Iterator<Neighbour> iterator = neighbour.iterator();

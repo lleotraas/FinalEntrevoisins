@@ -113,17 +113,6 @@ public class DetailActivity extends AppCompatActivity {
         setNeighbourInformations(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
     }
 
-    public void getNeighbour(Neighbour neighbour){
-        String imageUrl = neighbour.getAvatarUrl();
-        String imageName = neighbour.getName();
-        String aboutMe = neighbour.getAboutMe();
-        String address = neighbour.getAddress();
-        String phoneNumber = neighbour.getPhoneNumber();
-        String facebook = neighbour.getFacebook();
-
-        setNeighbourInformations(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
-    }
-
     /**
      * set all neighbour informations
      * @param imageUrl
@@ -145,7 +134,6 @@ public class DetailActivity extends AppCompatActivity {
         neighbourAdressTxt.setText(address);
         neighbourPhoneNumberTxt.setText(phoneNumber);
         neighbourFacebookTxt.setText(facebook);
-
     }
 
     /**
