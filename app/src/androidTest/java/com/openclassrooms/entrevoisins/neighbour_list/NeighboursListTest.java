@@ -90,9 +90,6 @@ public class NeighboursListTest {
     public void myNeighbourList_detailActivity_intented(){
         onView(withId(R.id.list_neighbours))
             .perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
-        intended(hasExtra("neighbour_id", service.getNeighbours().get(1).getId()));
-
-
     }
 
     @Test
