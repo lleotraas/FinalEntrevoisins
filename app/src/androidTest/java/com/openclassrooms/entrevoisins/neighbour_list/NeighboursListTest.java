@@ -29,6 +29,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -51,14 +52,13 @@ public class NeighboursListTest {
     @Rule
     public ActivityTestRule<ListNeighbourActivity> mActivityRule =
             new ActivityTestRule(ListNeighbourActivity.class);
-    public IntentsTestRule<DetailActivity> mIntentsTestRule =
-            new IntentsTestRule<>(DetailActivity.class);
 
     @Before
     public void setUp() {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
         service = DI.getNeighbourApiService();
+        assertThat(service, notNullValue());
 
     }
 
@@ -90,6 +90,7 @@ public class NeighboursListTest {
     public void myNeighbourList_detailActivity_intented(){
         onView(withId(R.id.list_neighbours))
             .perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
+        onView(withId(R.id.activity_show_neighbour_container)).check(matches(isDisplayed()));
     }
 
     @Test

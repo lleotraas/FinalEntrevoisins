@@ -20,8 +20,6 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -29,6 +27,7 @@ public class NeighbourFragmentFavorite extends Fragment {
 
     private static final String TAG = "FavoriteFragment";
     private NeighbourApiService mApiService;
+    private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
 
     public static NeighbourFragmentFavorite newInstance(){
@@ -53,6 +52,12 @@ public class NeighbourFragmentFavorite extends Fragment {
         return view;
 
     }
+    private void initFavoriteList(){
+        mNeighbours = mApiService.getFavoriteNeighbours();
+        mApiService.removeFavoriteList(mNeighbours);
+        mApiService.createFavoriteList(mNeighbours);
+        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+    }
 
     @Override
     public void onStart() {
@@ -65,9 +70,7 @@ public class NeighbourFragmentFavorite extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: resumed");
-        mApiService.removeFavoriteList(mApiService.getFavoriteNeighbours());
-        mApiService.initFavoriteList(mApiService.getFavoriteNeighbours());
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mApiService.getFavoriteNeighbours()));
+       initFavoriteList();
     }
 
     @Override
@@ -80,8 +83,6 @@ public class NeighbourFragmentFavorite extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
         mApiService.deleteNeighbour(event.neighbour);
-        mApiService.removeFavoriteList(mApiService.getFavoriteNeighbours());
-        mApiService.initFavoriteList(mApiService.getFavoriteNeighbours());
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mApiService.getFavoriteNeighbours()));
+        initFavoriteList();
     }
 }
