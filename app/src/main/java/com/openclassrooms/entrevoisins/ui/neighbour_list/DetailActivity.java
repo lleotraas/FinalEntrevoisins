@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
     public static final String  TAG = "ShowNeighbourActivity";
-    public int mNeighbourIndex;
+    private int mNeighbourIndex;
     public NeighbourApiService mApiService;
 
     @BindView(R.id.activity_show_neighbour_return_ib)
@@ -79,7 +79,13 @@ public class DetailActivity extends AppCompatActivity {
         });
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        getNeighbourInformations(getNeighbourIndex(getIntent().getLongExtra("neighbour_id", 0)));
+        //id is convert into integer
+        getNeighbourIndex(getIntent().getLongExtra("neighbour_id", 0));
+
+        //get neighbour informations and set to the view
+        getNeighbourInformations(mNeighbourIndex);
+
+        //verify if neighbour is favorite
         neighbourIsFavourite(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
 
     }
