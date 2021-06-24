@@ -51,7 +51,7 @@ public class NeighbourServiceTest {
         Neighbour favoriteNeighbour = service.getNeighbours().get(0);
         favoriteNeighbour.setFavourite(true);
         //ACT
-        service.initFavoriteList(service.getFavoriteNeighbours());
+        service.createFavoriteList(service.getFavoriteNeighbours());
         //ASSERT
         assertEquals(1,service.getFavoriteNeighbours().size());
     }

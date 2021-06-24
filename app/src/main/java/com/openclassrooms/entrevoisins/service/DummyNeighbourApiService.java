@@ -50,7 +50,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
      * @param neighbour
      */
     @Override
-    public void initFavoriteList(List<Neighbour> neighbour) {
+    public void createFavoriteList(List<Neighbour> neighbour) {
         for(int index = 0;index < neighbours.size();index++){
             if(neighbours.get(index).getFavourite()){
                 neighbour.add(neighbours.get(index));
