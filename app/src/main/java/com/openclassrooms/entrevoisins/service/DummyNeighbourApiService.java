@@ -12,8 +12,6 @@ import java.util.List;
 public class DummyNeighbourApiService implements  NeighbourApiService {
 
     private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
-    public List<Neighbour> favoriteNeighbours = new ArrayList<>();
-
 
     /**
      * {@inheritDoc}
@@ -21,11 +19,6 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     @Override
     public List<Neighbour> getNeighbours() {
         return neighbours;
-    }
-
-    @Override
-    public List<Neighbour> getFavoriteNeighbours() {
-        return favoriteNeighbours;
     }
 
     /**
@@ -47,27 +40,40 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
 
     /**
      * {@inheritDoc}
-     * @param neighbour
      */
     @Override
-    public void createFavoriteList(List<Neighbour> neighbour) {
+    public List<Neighbour> createFavoriteList() {
+        List<Neighbour> favoriteNeighbours = new ArrayList<>();
         for(int index = 0;index < neighbours.size();index++){
             if(neighbours.get(index).getFavourite()){
-                neighbour.add(neighbours.get(index));
+                favoriteNeighbours.add(neighbours.get(index));
             }
         }
+        return favoriteNeighbours;
     }
 
     /**
-     * {@inheritDoc}
-     * @param neighbour
+     *
+     * @param id
+     * @return
      */
     @Override
-    public void removeFavoriteList(List<Neighbour> neighbour) {
-        Iterator<Neighbour> iterator = neighbour.iterator();
-        while(iterator.hasNext()){
-            Object object = iterator.next();
-            iterator.remove();
+    public int getNeighbourIndex(long id) {
+        int neighbourIndex = 0;
+        for (int index = 0;index < getNeighbours().size();index++){
+            if (id == getNeighbours().get(index).getId()){
+                neighbourIndex = index;
+            }
         }
+        return neighbourIndex;
+    }
+
+    /**
+     *
+     * @param index
+     */
+    @Override
+    public void neighbourIsFavorite(int index) {
+        getNeighbours().get(index).setFavourite(!getNeighbours().get(index).getFavourite());
     }
 }

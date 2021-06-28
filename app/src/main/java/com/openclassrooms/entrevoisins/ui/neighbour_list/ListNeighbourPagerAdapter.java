@@ -23,12 +23,13 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-    NeighbourFragment[] page = {
-                               NeighbourFragment.newInstance("NEIGHBOUR"),
-                               NeighbourFragment.newInstance("FAVORITE")
-    };
+        switch (position){
+            case 0:return NeighbourFragment.newInstance("NEIGHBOUR");
 
-    return page[position];
+            case 1:return NeighbourFragment.newInstance("FAVORITE");
+
+            default:return null;
+        }
     }
 
 

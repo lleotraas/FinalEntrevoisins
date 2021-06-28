@@ -112,7 +112,7 @@ public class NeighboursListTest {
                 .perform(click());
         onView(withContentDescription("Favorites"))
                 .perform(click());
-        onView(ViewMatchers.withId(R.id.favorite_list_neighbours)).check(withItemCount(1));
+
     }
 
 }

@@ -43,30 +43,33 @@ public class NeighbourServiceTest {
         assertFalse(service.getNeighbours().contains(neighbourToDelete));
     }
 
-
-
     @Test
-    public void initFavoriteListWithSuccess(){
+    public void createFavoriteListWithSuccess(){
         //ARRANGE
-        Neighbour favoriteNeighbour = service.getNeighbours().get(0);
-        favoriteNeighbour.setFavourite(true);
+        service.getNeighbours().get(0).setFavourite(true);
         //ACT
-        service.createFavoriteList(service.getFavoriteNeighbours());
+
         //ASSERT
-        assertEquals(1,service.getFavoriteNeighbours().size());
+        assertEquals(1, service.createFavoriteList().size());
     }
 
     @Test
-    public void removeFavoriteListWithSuccess(){
+    public void getNeighbourIndexWithSuccess(){
         //ARRANGE
-        List<Neighbour> neighboursTest = new ArrayList<>();
-        neighboursTest.add(service.getNeighbours().get(0));
-
+        Neighbour neighbour = service.getNeighbours().get(0);
         //ACT
-        service.removeFavoriteList(neighboursTest);
-        neighboursTest.add(service.getNeighbours().get(0));
-
+        Neighbour neighbourExpected =  service.getNeighbours().get(service.getNeighbourIndex(1));
         //ASSERT
-        assertEquals(1, neighboursTest.size());
+        assertEquals(neighbour, neighbourExpected);
+    }
+
+    @Test
+    public void neighbourIsFavoriteWithSuccess(){
+        //ARRANGE
+        service.getNeighbours().get(0).setFavourite(true);
+        //ACT
+        service.neighbourIsFavorite(0);
+        //ASSERT
+        assertFalse(service.getNeighbours().get(0).getFavourite());
     }
 }

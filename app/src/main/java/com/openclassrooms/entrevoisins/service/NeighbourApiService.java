@@ -16,8 +16,6 @@ public interface NeighbourApiService {
      */
     List<Neighbour> getNeighbours();
 
-    List<Neighbour> getFavoriteNeighbours();
-
     /**
      * Deletes a neighbour
      * @param neighbour
@@ -32,13 +30,18 @@ public interface NeighbourApiService {
 
     /**
      * Initialize the list of favorite neighbours to show
-     * @param neighbour
      */
-    void createFavoriteList(List<Neighbour> neighbour);
+    List<Neighbour> createFavoriteList();
 
     /**
-     * Remove the list of favorite neighbours
-     * @param neighbour
+     *
+     * @param id
+     * @return
      */
-    void removeFavoriteList(List<Neighbour> neighbour);
+    int getNeighbourIndex(long id);
+
+    void neighbourIsFavorite(int index);
+
+
+
 }

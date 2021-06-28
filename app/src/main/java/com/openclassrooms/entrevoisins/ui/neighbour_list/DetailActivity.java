@@ -66,94 +66,45 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite()){
-                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
-                    mApiService.getNeighbours().get(mNeighbourIndex).setFavourite(false);
                     setImageNotFavourite();
                 }else{
-                    Log.d(TAG, "onClick: isFavorite = " + mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
-                    mApiService.getNeighbours().get(mNeighbourIndex).setFavourite(true);
                     setImageFavourite();
                 }
-
+                mApiService.neighbourIsFavorite(mNeighbourIndex);
             }
         });
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        //id is convert into integer
-        getNeighbourIndex(getIntent().getLongExtra("neighbour_id", 0));
+        //id is convert into integer and set
+        setNeighbourIndex(mApiService.getNeighbourIndex(getIntent().getLongExtra("neighbour_id", 0)));
 
         //get neighbour informations and set to the view
-        getNeighbourInformations(mNeighbourIndex);
+        setNeighbourInformations();
 
         //verify if neighbour is favorite
-        neighbourIsFavourite(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite());
-
-    }
-
-    /**
-     * get the position of the neighbour
-     * @return
-     */
-    public int getNeighbourIndex(long id){
-        for(int index = 0;index < mApiService.getNeighbours().size();index++) {
-            if (id == mApiService.getNeighbours().get(index).getId()) {
-                setNeighbourIndex(index);
-            }
+        if(mApiService.getNeighbours().get(mNeighbourIndex).getFavourite()){
+            setImageFavourite();
         }
-        return mNeighbourIndex;
     }
 
-    /**
-     * get all neighbour informations
-     * @param neighbourPosition
-     */
-    public void getNeighbourInformations(int neighbourPosition){
-        Log.d(TAG, "getIncomingIntent: position = " + mNeighbourIndex);
-        String imageUrl = mApiService.getNeighbours().get(mNeighbourIndex).getAvatarUrl();
-        String imageName = mApiService.getNeighbours().get(mNeighbourIndex).getName();
-        String aboutMe = mApiService.getNeighbours().get(mNeighbourIndex).getAboutMe();
-        String address = mApiService.getNeighbours().get(mNeighbourIndex).getAddress();
-        String phoneNumber = mApiService.getNeighbours().get(mNeighbourIndex).getPhoneNumber();
-        String facebook = mApiService.getNeighbours().get(mNeighbourIndex).getFacebook();
-
-        setNeighbourInformations(imageUrl, imageName, aboutMe, address, phoneNumber, facebook);
-    }
 
     /**
      * set all neighbour informations
-     * @param imageUrl
-     * @param name
-     * @param aboutMe
-     * @param address
-     * @param phoneNumber
-     * @param facebook
      */
-    private void setNeighbourInformations(String imageUrl, String name, String aboutMe, String address, String phoneNumber, String facebook){
+    private void setNeighbourInformations(){
         Log.d(TAG, "setImage: setting the image and name to widgets.");
-        neighbourName.setText(name);
-        neighbourNameContent.setText(name);
+        neighbourName.setText(mApiService.getNeighbours().get(mNeighbourIndex).getName());
+        neighbourNameContent.setText(mApiService.getNeighbours().get(mNeighbourIndex).getName());
         Glide.with(this)
-                .load(imageUrl)
+                .load(mApiService.getNeighbours().get(mNeighbourIndex).getAvatarUrl())
                 .apply(RequestOptions.centerCropTransform())
                 .into(neighbourAvatar);
-        neighbourAboutMe.setText(aboutMe);
-        neighbourAdressTxt.setText(address);
-        neighbourPhoneNumberTxt.setText(phoneNumber);
-        neighbourFacebookTxt.setText(facebook);
+        neighbourAboutMe.setText(mApiService.getNeighbours().get(mNeighbourIndex).getAboutMe());
+        neighbourAdressTxt.setText(mApiService.getNeighbours().get(mNeighbourIndex).getAddress());
+        neighbourPhoneNumberTxt.setText(mApiService.getNeighbours().get(mNeighbourIndex).getPhoneNumber());
+        neighbourFacebookTxt.setText(mApiService.getNeighbours().get(mNeighbourIndex).getFacebook());
     }
 
-    /**
-     * verify if the neighbour is favourite
-     * @param isFavourite
-     */
-    public void neighbourIsFavourite(boolean isFavourite){
-        Log.d(TAG, "getIncomingIntent: isFavourite = " + isFavourite);
-        if(isFavourite){
-            setImageFavourite();
-        }else {
-            setImageNotFavourite();
-        }
-    }
 
     public int getNeighbourIndex() {
         return mNeighbourIndex;
