@@ -113,7 +113,13 @@ public class NeighboursListTest {
                 .perform(click());
         onView(withContentDescription("Favorites"))
                 .perform(click());
-
+        onView(allOf(withId(R.id.list_neighbours), isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.activity_show_neighbour_favorite_fab))
+                .perform(click());
+        onView(withId(R.id.activity_show_neighbour_return_ib))
+                .perform(click());
+        onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(0));
     }
 
 }
